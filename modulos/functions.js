@@ -1,4 +1,4 @@
-import { categories, carrusel } from "./variables.js"
+import { categories, carrusel, statistics, statisticsPast, statisticsUpcoming } from "./variables.js"
 
 export function drawCards(array, where, currentDate, time) {
     if (time == undefined && currentDate == undefined) {
@@ -42,25 +42,25 @@ export function drawCards(array, where, currentDate, time) {
         }
     } else {
 
-    let pastEvents = []
+        let pastEvents = []
 
-    let upcomingEvents = []
+        let upcomingEvents = []
 
-    for (let a = 0; a < array.length; a++) {
-        if (array[a].date > currentDate && time == "past") {
-            pastEvents.push(array[a]);
-            if (a == array.length - 1){
-                drawCards(pastEvents, where)
-            }
-        } else if (array[a].date < currentDate && time == "upcoming") {
-            upcomingEvents.push(array[a]);
-            if (a == array.length - 1){
-                drawCards(upcomingEvents, where)
+        for (let a = 0; a < array.length; a++) {
+            if (array[a].date > currentDate && time == "past") {
+                pastEvents.push(array[a]);
+                if (a == array.length - 1) {
+                    drawCards(pastEvents, where)
+                }
+            } else if (array[a].date < currentDate && time == "upcoming") {
+                upcomingEvents.push(array[a]);
+                if (a == array.length - 1) {
+                    drawCards(upcomingEvents, where)
+                }
             }
         }
     }
-    }
-    
+
 }
 
 export function drawCategories(data) {
@@ -87,7 +87,7 @@ export function generalFilter(array, array2) {
     filterSearch(array);
     let search = document.getElementById("search")
     search.addEventListener("keyup", e => {
-        if (e.target.value == ""){
+        if (e.target.value == "") {
             drawCards(array2, carrusel)
         }
     })
@@ -95,7 +95,7 @@ export function generalFilter(array, array2) {
         let cheked = Array.from(
             document.querySelectorAll("input[type=checkbox]:checked")
         ).map((e) => e.value);
-        filterSearch (cheked)
+        filterSearch(cheked)
         filterCategories(array, array2, cheked);
     });
 }
@@ -134,4 +134,177 @@ export function filterSearch(array) {
         }
         drawCards(lastArraySea, carrusel);
     });
+}
+
+export function generalStatistics(data) {
+    let listCapacity = largerCapacity(data)
+    let hightPorcentList = [[0], [0], [0]]
+    let lowPorcentList = [[99], [99], [99]]
+    for (let i = 0; i < data.events.length; i++) {
+        let assistance = data.events[i].assistance
+        if (assistance == undefined) {
+            continue
+        }
+        let porcent = assistancePorcent(data.events[i])
+        if (porcent > (hightPorcentList[0])[0]) {
+            hightPorcentList[0] = [porcent, data.events[i].name]
+        } else if (porcent > (hightPorcentList[1])[0]) {
+            hightPorcentList[1] = [porcent, data.events[i].name]
+        } else if (porcent > (hightPorcentList[2])[0]) {
+            hightPorcentList[2] = [porcent, data.events[i].name]
+        }
+        
+        if (porcent < (lowPorcentList[0])[0]) {
+            lowPorcentList[1] = lowPorcentList[0]
+            lowPorcentList[0] = [porcent, data.events[i].name]
+        } else if (porcent < (lowPorcentList[1])[0]) {
+            lowPorcentList[2] = lowPorcentList[1]
+            lowPorcentList[1] = [porcent, data.events[i].name]
+        } else if (porcent < (lowPorcentList[2])[0]) {
+            lowPorcentList[2] = [porcent, data.events[i].name]
+        }
+    }
+    hightPorcentList[0][0] =  hightPorcentList[0][0]+" % "
+    hightPorcentList[1][0] =  hightPorcentList[1][0]+" % "
+    hightPorcentList[2][0] =  hightPorcentList[2][0]+" % "
+    lowPorcentList[0][0] =  lowPorcentList[0][0]+" % "
+    lowPorcentList[1][0] =  lowPorcentList[1][0]+" % "
+    lowPorcentList[2][0] =  lowPorcentList[2][0]+" % "
+    let generalStatisticsTable = [hightPorcentList, lowPorcentList, listCapacity]
+    console.log(generalStatisticsTable);
+    drawStats(statistics, generalStatisticsTable, "g")
+}
+
+export function statisticsCategoriesPast(data) {
+    let listCategoriesPast = []
+    for (let k = 0; k < data.events.length; k++) {
+        if (data.events[k].date > data.currentDate) {
+
+            continue
+        } else if (listCategoriesPast.length == 0) {
+            listCategoriesPast[0] = [data.events[k].category, revenues(data.events[k]), assistancePorcent(data.events[k])]
+        } else {
+            let l = 0
+            while (!(listCategoriesPast[l] == undefined)) {
+                l++
+                if (listCategoriesPast[l - 1][0] == data.events[k].category) {
+                    listCategoriesPast[l][1] = parseInt(parseFloat(listCategoriesPast[l][1]) + revenues(data.events[k]))
+                    listCategoriesPast[l][2] = (parseInt(parseFloat(listCategoriesPast[l][2]) + assistancePorcent(data.events[k])) / 2)
+
+                    break
+                } else if (listCategoriesPast[l] == undefined) {
+                    listCategoriesPast[l] = [data.events[k].category, revenues(data.events[k]), assistancePorcent(data.events[k])]
+
+                    break
+                } else if (listCategoriesPast[l][0] == data.events[k].category) {
+                    listCategoriesPast[l][1] = parseInt(parseFloat(listCategoriesPast[l][1]) + revenues(data.events[k]))
+                    listCategoriesPast[l][2] = (parseInt(parseFloat(listCategoriesPast[l][2]) + assistancePorcent(data.events[k])) / 2)
+
+                    break
+                } else {
+                    continue
+                }
+            }
+        }
+    }
+    console.log(listCategoriesPast);
+    drawStats(statisticsPast, listCategoriesPast)
+}
+
+export function statisticsCategoriesUpcoming(data) {
+    let listCategoriesUpcoming = []
+    for (let k = 0; k < data.events.length; k++) {
+        if (data.events[k].date < data.currentDate) {
+            continue
+        } else if (listCategoriesUpcoming.length == 0) {
+            listCategoriesUpcoming[0] = [data.events[k].category, revenues(data.events[k]), assistancePorcent(data.events[k])]
+        } else {
+            let l = 0
+            while (!(listCategoriesUpcoming[l] == undefined)) {
+                l++
+                if (listCategoriesUpcoming[l - 1][0] == data.events[k].category) {
+                    listCategoriesUpcoming[l][1] = parseInt(parseFloat(listCategoriesUpcoming[l][1]) + revenues(data.events[k]))
+                    listCategoriesUpcoming[l][2] = (parseInt(parseFloat(listCategoriesUpcoming[l][2]) + assistancePorcent(data.events[k])) / 2)
+
+                    break
+                } else if (listCategoriesUpcoming[l] == undefined) {
+                    listCategoriesUpcoming[l] = [data.events[k].category, revenues(data.events[k]), assistancePorcent(data.events[k])]
+
+                    break
+                } else if (listCategoriesUpcoming[l][0] == data.events[k].category) {
+                    listCategoriesUpcoming[l][1] = parseInt(parseFloat(listCategoriesUpcoming[l][1]) + revenues(data.events[k]))
+                    listCategoriesUpcoming[l][2] = (parseInt(parseFloat(listCategoriesUpcoming[l][2]) + assistancePorcent(data.events[k])) / 2)
+
+                    break
+                } else {
+                    continue
+                }
+            }
+        }
+    }
+    console.log(listCategoriesUpcoming);
+    drawStats(statisticsUpcoming, listCategoriesUpcoming)
+}
+
+export function largerCapacity(data) {
+    let capacity = [[0], [0], [0]]
+    for (let i = 0; i < data.events.length; i++) {
+        if (data.events[i].capacity > (capacity[0])[0] + 1) {
+            capacity[1] = capacity[0]
+            capacity[0] = [data.events[i].capacity, data.events[i].name]
+        } else if (data.events[i].capacity > (capacity[1])[0] + 1) {
+            capacity[2] = capacity[1]
+            capacity[1] = [data.events[i].capacity, data.events[i].name]
+        } else if (data.events[i].capacity > (capacity[2])[0] + 1) {
+            capacity[2] = [data.events[i].capacity, data.events[i].name]
+        }
+    }
+    return capacity
+}
+
+export function revenues(events) {
+    if (events.assistance == undefined) {
+        let revenues = events.price * events.estimate
+        return (revenues)
+    } else {
+        let revenues = events.price * events.assistance
+        return (revenues)
+    }
+}
+
+export function assistancePorcent(events) {
+    if (events.assistance == undefined) {
+        let porcent = (parseFloat(events.estimate) / parseFloat(events.capacity)) * 100
+        return porcent
+    } else {
+        let porcent = (parseFloat(events.assistance) / parseFloat(events.capacity)) * 100
+        return porcent
+    }
+}
+
+
+function drawStats(where, array, g) {
+    for (let i = 0; i < array.length; i++) {
+        if (g == "g"){
+            let tableRow = document.createElement("tr")
+        tableRow.innerHTML = `
+        <tr>
+            <td>${array[0][i]}</td>
+            <td>${array[1][i]}</td>
+            <td>${array[2][i]}</td>
+        </tr>
+        `
+        where.appendChild(tableRow)
+        }else{
+            let tableRow = document.createElement("tr")
+        tableRow.innerHTML = `
+        <tr>
+            <td>${array[i][0]}</td>
+            <td>${array[i][1]} $</td>
+            <td>${array[i][2]} %</td>
+        </tr>
+        `
+        where.appendChild(tableRow)
+        }
+    }  
 }
