@@ -7,11 +7,11 @@ let url = "https://mindhub-xj03.onrender.com/api/amazing"
 fetch(url).then(
     data => data.json()
 ).then(data => {
-
     misFunciones.drawCards(data.events, carrusel);
 
     misFunciones.generalFilter(data.events, data.events);
 
     misFunciones.drawCategories(data);
-
 })
+
+

@@ -32,7 +32,7 @@ export function drawCards(array, where, currentDate, time) {
             </div>
             <div class="card-body cardEnd">
             <p>Price: ${array[j].price}</p>
-            <a href="/Details.html" class="button">Details</a>
+            <a href="#" class="button" value="${array[j].name}">Details</a>
             </div>`;
                     contenedor.appendChild(card);
                 }
