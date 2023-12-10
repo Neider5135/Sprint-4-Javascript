@@ -6,7 +6,6 @@ fetch(url).then(
     response => response.json()
 ).then(
     data => {
-        console.log(data);
         myModule.generalStatistics(data);
         myModule.statisticsCategoriesPast(data)
         myModule.statisticsCategoriesUpcoming(data)

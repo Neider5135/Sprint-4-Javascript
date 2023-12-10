@@ -161,7 +161,6 @@ export function generalStatistics(data) {
     lowPorcentList[1][0] =  lowPorcentList[1][0]+" % "
     lowPorcentList[2][0] =  lowPorcentList[2][0]+" % "
     let generalStatisticsTable = [hightPorcentList, lowPorcentList, listCapacity]
-    console.log(generalStatisticsTable);
     drawStats(statistics, generalStatisticsTable, "g")
 }
 
@@ -169,7 +168,6 @@ export function statisticsCategoriesPast(data) {
     let listCategoriesPast = []
     for (let k = 0; k < data.events.length; k++) {
         if (data.events[k].date > data.currentDate) {
-
             continue
         } else if (listCategoriesPast.length == 0) {
             listCategoriesPast[0] = [data.events[k].category, revenues(data.events[k]), assistancePorcent(data.events[k])]
@@ -180,16 +178,13 @@ export function statisticsCategoriesPast(data) {
                 if (listCategoriesPast[l - 1][0] == data.events[k].category) {
                     listCategoriesPast[l][1] = parseInt(parseFloat(listCategoriesPast[l][1]) + revenues(data.events[k]))
                     listCategoriesPast[l][2] = (parseInt(parseFloat(listCategoriesPast[l][2]) + assistancePorcent(data.events[k])) / 2)
-
                     break
                 } else if (listCategoriesPast[l] == undefined) {
                     listCategoriesPast[l] = [data.events[k].category, revenues(data.events[k]), assistancePorcent(data.events[k])]
-
                     break
                 } else if (listCategoriesPast[l][0] == data.events[k].category) {
                     listCategoriesPast[l][1] = parseInt(parseFloat(listCategoriesPast[l][1]) + revenues(data.events[k]))
                     listCategoriesPast[l][2] = (parseInt(parseFloat(listCategoriesPast[l][2]) + assistancePorcent(data.events[k])) / 2)
-
                     break
                 } else {
                     continue
@@ -197,7 +192,6 @@ export function statisticsCategoriesPast(data) {
             }
         }
     }
-    console.log(listCategoriesPast);
     drawStats(statisticsPast, listCategoriesPast)
 }
 
@@ -215,16 +209,13 @@ export function statisticsCategoriesUpcoming(data) {
                 if (listCategoriesUpcoming[l - 1][0] == data.events[k].category) {
                     listCategoriesUpcoming[l][1] = parseInt(parseFloat(listCategoriesUpcoming[l][1]) + revenues(data.events[k]))
                     listCategoriesUpcoming[l][2] = (parseInt(parseFloat(listCategoriesUpcoming[l][2]) + assistancePorcent(data.events[k])) / 2)
-
                     break
                 } else if (listCategoriesUpcoming[l] == undefined) {
                     listCategoriesUpcoming[l] = [data.events[k].category, revenues(data.events[k]), assistancePorcent(data.events[k])]
-
                     break
                 } else if (listCategoriesUpcoming[l][0] == data.events[k].category) {
                     listCategoriesUpcoming[l][1] = parseInt(parseFloat(listCategoriesUpcoming[l][1]) + revenues(data.events[k]))
                     listCategoriesUpcoming[l][2] = (parseInt(parseFloat(listCategoriesUpcoming[l][2]) + assistancePorcent(data.events[k])) / 2)
-
                     break
                 } else {
                     continue
@@ -232,7 +223,6 @@ export function statisticsCategoriesUpcoming(data) {
             }
         }
     }
-    console.log(listCategoriesUpcoming);
     drawStats(statisticsUpcoming, listCategoriesUpcoming)
 }
 
@@ -279,10 +269,8 @@ export function buttonDetails() {
             let data = (e.target.name).split("&")
             let dataJson = JSON.stringify(data)
             if (data.lenth != 0) {
-                console.log("1");
                 localStorage.setItem("data", dataJson)
                 if (data == "") {
-                    console.log("2");
                 } else {
                     location.href = "./Details.html"
                 }
