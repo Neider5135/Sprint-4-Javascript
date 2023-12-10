@@ -4,9 +4,12 @@ let dataJson = localStorage.getItem("data")
 
 let data = JSON.parse(dataJson)
 
-if(data[8] == undefined){
+let assistance
+
+if(data[8] == "undefined"){
     data[8] = data[9]
 }
+
 
 details.innerHTML = `
     <img class="w-50" src="${data[0]}" alt="${data[1]}">
