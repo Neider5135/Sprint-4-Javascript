@@ -32,7 +32,7 @@ export function drawCards(array, where, currentDate, time) {
             </div>
             <div class="card-body cardEnd">
             <p>Price: ${array[j].price}</p>
-            <a href="#" class="button" value="${array[j].name}">Details</a>
+            <input type="submit" class="button" value="Details" name="${array[j].image}&${array[j].name}&${array[j].date}&${array[j].description}&${array[j].category}&${array[j].place}&${array[j].capacity}&${array[j].assistance}&${array[j].price}">
             </div>`;
                     contenedor.appendChild(card);
                 }
@@ -281,7 +281,6 @@ export function assistancePorcent(events) {
         return porcent
     }
 }
-
 
 function drawStats(where, array, g) {
     for (let i = 0; i < array.length; i++) {
