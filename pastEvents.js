@@ -13,4 +13,6 @@ fetch(url).then(
   misFunciones.generalFilter(data.events, data.events);
 
   misFunciones.drawCategories(data);
+
+  misFunciones.buttonDetails()
 })

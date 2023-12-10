@@ -13,23 +13,6 @@ fetch(url).then(
 
     misFunciones.drawCategories(data);
 
-
-
-
+    misFunciones.buttonDetails()
 })
-let Cards = document.getElementById("carouselPrincipal")
-Cards.addEventListener("click", (e) => {
-    if (e.target.name != undefined) {
-        let data = (e.target.name).split("&")
-        let dataJson = JSON.stringify(data)
-        if (data.lenth != 0) {
-            console.log("1");
-            localStorage.setItem("data", dataJson)
-            if (data == "") {
-                console.log("2");
-            } else {
-                location.href = "./Details.html"
-            }
-        }
-    }
-})
+

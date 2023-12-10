@@ -32,7 +32,7 @@ export function drawCards(array, where, currentDate, time) {
             </div>
             <div class="card-body cardEnd">
             <p>Price: ${array[j].price}</p>
-            <input type="submit" class="button" value="Details" name="${array[j].image}&${array[j].name}&${array[j].date}&${array[j].description}&${array[j].category}&${array[j].place}&${array[j].capacity}&${array[j].assistance}&${array[j].price}">
+            <input type="submit" class="button" value="Details" name="${array[j].image}&${array[j].name}&${array[j].date}&${array[j].description}&${array[j].category}&${array[j].place}&${array[j].capacity}&${array[j].price}&${array[j].assistance}&${array[j].estimate}">
             </div>`;
                     contenedor.appendChild(card);
                 }
@@ -280,6 +280,26 @@ export function assistancePorcent(events) {
         let porcent = (parseFloat(events.assistance) / parseFloat(events.capacity)) * 100
         return porcent
     }
+}
+
+export function buttonDetails() {
+    let Cards = document.getElementById("carouselPrincipal")
+    Cards.addEventListener("click", (e) => {
+        if (e.target.name != undefined) {
+            let data = (e.target.name).split("&")
+            let dataJson = JSON.stringify(data)
+            if (data.lenth != 0) {
+                console.log("1");
+                localStorage.setItem("data", dataJson)
+                if (data == "") {
+                    console.log("2");
+                } else {
+                    location.href = "./Details.html"
+                }
+            }
+        }
+    })
+
 }
 
 function drawStats(where, array, g) {
