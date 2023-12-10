@@ -1,6 +1,6 @@
 import * as misFunciones from "./modulos/functions.js"
 
-import { carrusel } from "./modulos/variables.js"
+import { carrusel, pastEvents } from "./modulos/variables.js"
 
 let url = "https://mindhub-xj03.onrender.com/api/amazing"
 
@@ -10,9 +10,10 @@ fetch(url).then(
 
   misFunciones.drawCards(data.events, carrusel, data.currentDate, "past");
 
-  misFunciones.generalFilter(data.events, data.events);
+  misFunciones.generalFilter(pastEvents, pastEvents);
 
   misFunciones.drawCategories(data);
 
   misFunciones.buttonDetails()
+  
 })

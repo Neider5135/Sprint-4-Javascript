@@ -1,4 +1,4 @@
-import { categories, carrusel, statistics, statisticsPast, statisticsUpcoming } from "./variables.js"
+import { categories, carrusel, statistics, statisticsPast, statisticsUpcoming, pastEvents, upcomingEvents} from "./variables.js"
 
 export function drawCards(array, where, currentDate, time) {
     if (time == undefined && currentDate == undefined) {
@@ -41,26 +41,16 @@ export function drawCards(array, where, currentDate, time) {
             where.appendChild(carruselItem);
         }
     } else {
-
-        let pastEvents = []
-
-        let upcomingEvents = []
-
         for (let a = 0; a < array.length; a++) {
-            if (array[a].date > currentDate && time == "past") {
+            if (array[a].date < currentDate && time == "past") {
                 pastEvents.push(array[a]);
-                if (a == array.length - 1) {
-                    drawCards(pastEvents, where)
-                }
-            } else if (array[a].date < currentDate && time == "upcoming") {
+                drawCards(pastEvents, where)
+            } else if (array[a].assistance == undefined && time == "upcoming") {
                 upcomingEvents.push(array[a]);
-                if (a == array.length - 1) {
-                    drawCards(upcomingEvents, where)
-                }
+                drawCards(upcomingEvents, where)
             }
         }
     }
-
 }
 
 export function drawCategories(data) {

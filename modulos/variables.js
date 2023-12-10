@@ -7,3 +7,7 @@ export let statistics = document.getElementById("statistics")
 export let statisticsUpcoming = document.getElementById("statisticsUpcoming")
 
 export let statisticsPast = document.getElementById("statisticsPast")
+
+export let pastEvents = []
+
+export let upcomingEvents = []
