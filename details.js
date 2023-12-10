@@ -10,7 +10,6 @@ if(data[8] == "undefined"){
     data[8] = data[9]
 }
 
-
 details.innerHTML = `
     <img class="w-50" src="${data[0]}" alt="${data[1]}">
     <div class="w-25 d-flex align-items-center flex-column">
